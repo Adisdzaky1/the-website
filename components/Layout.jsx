@@ -1,10 +1,14 @@
 import Link from "next/link";
 
-
-export default function RootLayout({ children }) {
+export default function Layout({ children }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
+    <div className="app">
+      <header className="header">
+        <h1>
+          <Link href="/">The Website</Link>
+        </h1>
+      </header>
+      <main className="main">{children}</main>
+    </div>
+  );
 }
