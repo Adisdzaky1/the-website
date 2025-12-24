@@ -15,17 +15,19 @@ export default function Tap() {
     "Lambat Banget!", "Hampir...", "Coba Lagi!", "Tangan Berat?", "Nyerah Aja!"
   ];
 
-  const moveButton = () => {
-    if (isWinner) return;
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 100);
+  const handleButtonClick = (e) => {
+  // Jika tombol baru saja bergerak (dalam waktu kurang dari 50ms), abaikan klik
+  // Ini mencegah 'menang instan' karena jari nempel terus
+  if (isWinner) return;
+  
+  // Jika kamu ingin benar-benar curang (tombol gak bisa diklik sama sekali):
+  // e.preventDefault();
+  // moveButton(); 
+  
+  // Jika ingin tetap bisa menang tapi susah:
+  setIsWinner(true);
+};
 
-    setPosition({ top: `${y}px`, left: `${x}px` });
-    setAttempts((prev) => prev + 1);
-    const randomText = taunts[Math.floor(Math.random() * taunts.length)];
-    setBtnText(randomText);
-    if (!isHovered) setIsHovered(true);
-  };
 
   const resetGame = () => {
     setIsWinner(false);
@@ -62,23 +64,25 @@ export default function Tap() {
 
       {/* --- TOMBOL TARGET --- */}
       <button
-        onMouseEnter={moveButton} 
-        onClick={() => setIsWinner(true)} 
-        style={{ 
-            top: position.top, 
-            left: position.left,
-            transform: isHovered ? 'none' : 'translate(-50%, -50%)' 
-        }}
-        className={`
-            absolute z-20 font-bold py-3 px-8 rounded-full border-2 shadow-[0_0_20px_rgba(239,68,68,0.6)]
-            transition-all duration-200 ease-out 
-            ${isWinner ? 'hidden' : 'block'} 
-            ${isHovered ? 'bg-orange-600 border-orange-400' : 'bg-red-600 border-red-400'}
-            text-white hover:scale-110 active:scale-95 cursor-pointer pointer-events-auto
-        `}
-      >
-        {btnText}
-      </button>
+  // Gunakan onPointerOver supaya sensitif terhadap mouse DAN touch
+  onPointerOver={moveButton} 
+  onClick={handleButtonClick}
+  style={{ 
+      top: position.top, 
+      left: position.left,
+      transform: isHovered ? 'none' : 'translate(-50%, -50%)',
+      transition: 'all 0.15s ease-out' // Sedikit lebih cepat biar makin licin
+  }}
+  className={`
+      absolute z-20 font-bold py-3 px-8 rounded-full border-2 
+      shadow-[0_0_20px_rgba(239,68,68,0.6)]
+      ${isWinner ? 'hidden' : 'block'} 
+      ${isHovered ? 'bg-orange-600 border-orange-400' : 'bg-red-600 border-red-400'}
+      text-white cursor-pointer pointer-events-auto touch-none
+  `}
+>
+  {btnText}
+</button>
 
       {/* --- MODAL MENANG (Kalau User Curang/Hoki) --- */}
       {isWinner && (
@@ -103,3 +107,7 @@ export default function Tap() {
     </main>
   );
 }
+
+
+
+
