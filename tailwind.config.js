@@ -1,4 +1,5 @@
-export default {
+// tailwind.config.cjs
+module.exports = {
   content: [
     "./components/*.{js,ts,jsx,tsx}",
     "./pages/*.{js,ts,jsx,tsx}"
@@ -7,4 +8,4 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+};
